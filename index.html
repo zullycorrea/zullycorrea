@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zully Correa — Arte & Bienestar</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --cream: #f5f0e8;
+    --gold: #b8923a;
+    --gold-light: #d4aa5a;
+    --sage: #5a6b4e;
+    --warm: #8c5e3c;
+    --off-white: #faf7f2;
+    --border: rgba(184,146,58,0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Jost', sans-serif; background: var(--off-white); color: var(--ink); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 4rem;
+    background: rgba(250,247,242,0.92); backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 600; letter-spacing: 0.08em; color: var(--ink); text-decoration: none; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); text-decoration: none; font-weight: 400; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 5rem; }
+  .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 6rem 5rem 6rem 6rem; }
+  .hero-eyebrow { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1.5rem; }
+  .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3.5rem, 6vw, 6rem); font-weight: 300; line-height: 1.0; color: var(--ink); margin-bottom: 0.3rem; }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-subtitle { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; font-weight: 300; color: #7a6a58; margin-bottom: 2.5rem; margin-top: 0.8rem; letter-spacing: 0.03em; }
+  .hero-desc { font-size: 0.95rem; line-height: 1.8; color: #5a4e42; max-width: 420px; margin-bottom: 3rem; font-weight: 300; }
+  .hero-ctas { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+  .btn-primary { background: var(--gold); color: white; padding: 0.85rem 2.2rem; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; border: none; cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 500; transition: background 0.3s; text-decoration: none; display: inline-block; }
+  .btn-primary:hover { background: var(--warm); }
+  .btn-outline { background: transparent; color: var(--ink); padding: 0.85rem 2.2rem; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid var(--ink); cursor: pointer; font-family: 'Jost', sans-serif; font-weight: 400; transition: all 0.3s; text-decoration: none; display: inline-block; }
+  .btn-outline:hover { background: var(--ink); color: white; }
+  .hero-right { position: relative; overflow: hidden; background: var(--cream); }
+  .hero-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; height: 100%; gap: 3px; }
+  .hero-img { overflow: hidden; position: relative; min-height: 250px; }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; filter: saturate(0.9); }
+  .hero-img:hover img { transform: scale(1.05); }
+  .hero-img.tall { grid-row: span 2; }
+
+  section { padding: 6rem 6rem; }
+  .section-eyebrow { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); font-weight: 500; margin-bottom: 1rem; }
+  .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--ink); margin-bottom: 1.5rem; }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6rem; align-items: center; }
+  .about-image-wrap { position: relative; }
+  .about-image-wrap::before { content: ''; position: absolute; top: -16px; left: -16px; right: 16px; bottom: 16px; border: 1px solid var(--border); z-index: 0; }
+  .about-photo { width: 100%; aspect-ratio: 3/4; object-fit: cover; position: relative; z-index: 1; display: block; }
+  /* Si no hay foto, mostrar placeholder */
+  .about-photo-placeholder { width: 100%; aspect-ratio: 3/4; background: linear-gradient(135deg, #e8e0d0 0%, #d4c9b4 100%); position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; }
+  .about-text p { font-size: 1rem; line-height: 1.9; color: #5a4e42; margin-bottom: 1.5rem; font-weight: 300; }
+  .about-text p strong { color: var(--ink); font-weight: 500; }
+  .about-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; padding-top: 2.5rem; border-top: 0.5px solid var(--border); }
+  .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 300; color: var(--gold); line-height: 1; }
+  .stat-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: #8a7a6a; margin-top: 0.4rem; }
+
+  .gallery-section { background: var(--cream); padding: 6rem; }
+  .gallery-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 3.5rem; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .gallery-item { overflow: hidden; position: relative; cursor: pointer; background: #d4c9b4; min-height: 200px; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease, filter 0.4s ease; filter: saturate(0.85); display: block; }
+  .gallery-item:hover img { transform: scale(1.06); filter: saturate(1.1); }
+  .gallery-item.large { grid-column: span 2; grid-row: span 2; }
+  .gallery-item.tall { grid-row: span 2; }
+  .gallery-item.wide { grid-column: span 2; }
+  .gallery-overlay { position: absolute; inset: 0; background: rgba(26,18,8,0); transition: background 0.4s; display: flex; align-items: flex-end; padding: 1.5rem; }
+  .gallery-item:hover .gallery-overlay { background: rgba(26,18,8,0.45); }
+  .gallery-overlay-text { color: white; opacity: 0; transition: opacity 0.4s; font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; }
+  .gallery-item:hover .gallery-overlay-text { opacity: 1; }
+  /* Espacios para fotos nuevas */
+  .gallery-add { background: #e8e2d8; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; min-height: 200px; border: 1.5px dashed rgba(184,146,58,0.4); }
+  .add-text { font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+
+  .prices-section { background: var(--ink); color: var(--cream); padding: 6rem; }
+  .prices-section .section-title { color: var(--cream); }
+  .prices-section .section-eyebrow { color: var(--gold-light); }
+  .prices-intro { font-size: 1rem; line-height: 1.8; color: #c4b89e; max-width: 600px; margin-bottom: 3.5rem; font-weight: 300; }
+  .prices-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; }
+  .price-card { background: rgba(255,255,255,0.04); border: 0.5px solid rgba(184,146,58,0.2); padding: 2rem 2rem 2.5rem; transition: background 0.3s, border-color 0.3s; }
+  .price-card:hover { background: rgba(184,146,58,0.07); border-color: rgba(184,146,58,0.5); }
+  .price-size { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; color: var(--gold-light); margin-bottom: 0.3rem; }
+  .price-name { font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8a7a6a; margin-bottom: 1.5rem; }
+  .price-row { margin-bottom: 0.8rem; }
+  .price-tech { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); opacity: 0.7; margin-bottom: 0.2rem; }
+  .price-amounts { font-size: 0.88rem; color: #c4b89e; font-weight: 300; }
+  .price-amounts strong { color: white; font-weight: 400; }
+  .price-notes { margin-top: 3.5rem; padding-top: 2rem; border-top: 0.5px solid rgba(184,146,58,0.2); display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+  .price-note { font-size: 0.78rem; color: #8a7a6a; font-weight: 300; line-height: 1.5; }
+  .price-note::before { content: '* '; color: var(--gold); }
+  .prices-cta { margin-top: 3rem; }
+
+  .alma-section { background: var(--sage); color: white; padding: 0; overflow: hidden; }
+  .alma-inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 85vh; }
+  .alma-left { padding: 7rem 5rem 7rem 6rem; display: flex; flex-direction: column; justify-content: center; }
+  .alma-eyebrow { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.55); font-weight: 500; margin-bottom: 1rem; }
+  .alma-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 5vw, 5rem); font-weight: 300; line-height: 0.95; margin-bottom: 0.5rem; }
+  .alma-title em { font-style: italic; color: #c8ddb8; }
+  .alma-tagline { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; font-weight: 300; color: rgba(255,255,255,0.7); margin-bottom: 2.5rem; }
+  .alma-desc { font-size: 0.95rem; line-height: 1.9; color: rgba(255,255,255,0.75); font-weight: 300; max-width: 440px; margin-bottom: 2.5rem; }
+  .alma-pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 3rem; }
+  .pillar { background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.15); padding: 1rem 1.2rem; transition: background 0.3s; }
+  .pillar:hover { background: rgba(255,255,255,0.13); }
+  .pillar-icon { font-size: 1.2rem; margin-bottom: 0.4rem; }
+  .pillar-name { font-size: 0.78rem; letter-spacing: 0.06em; font-weight: 500; margin-bottom: 0.2rem; }
+  .pillar-text { font-size: 0.75rem; color: rgba(255,255,255,0.55); font-weight: 300; line-height: 1.5; }
+  .alma-right { background: rgba(0,0,0,0.15); display: flex; flex-direction: column; }
+  .alma-logo-area { flex: 1; display: flex; align-items: center; justify-content: center; padding: 4rem; }
+  .alma-logo-img { width: 260px; height: 260px; object-fit: contain; }
+  .alma-events { padding: 2rem 3rem 3rem; border-top: 0.5px solid rgba(255,255,255,0.12); }
+  .alma-events-title { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 1.2rem; }
+  .event-row { display: flex; gap: 1.5rem; align-items: flex-start; padding: 0.9rem 0; border-bottom: 0.5px solid rgba(255,255,255,0.1); }
+  .event-row:last-child { border-bottom: none; }
+  .event-num { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; color: #c8ddb8; min-width: 2rem; line-height: 1; }
+  .event-name { font-size: 0.85rem; font-weight: 400; margin-bottom: 0.15rem; }
+  .event-detail { font-size: 0.75rem; color: rgba(255,255,255,0.5); font-weight: 300; }
+
+  .testimonials-section { background: var(--cream); padding: 7rem 6rem; }
+  .testimonials-header { margin-bottom: 4rem; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .testimonial-card { background: white; border: 0.5px solid var(--border); padding: 2rem 2rem 2.5rem; position: relative; }
+  .testimonial-card::before { content: '\201C'; font-family: 'Cormorant Garamond', serif; font-size: 5rem; font-weight: 300; line-height: 0.7; color: var(--gold); opacity: 0.3; position: absolute; top: 1.2rem; left: 1.5rem; }
+  .testimonial-text { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; font-weight: 300; line-height: 1.75; color: #4a3e34; padding-top: 1.5rem; margin-bottom: 1.5rem; }
+  .testimonial-author { display: flex; align-items: center; gap: 0.9rem; }
+  .author-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--warm)); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: white; font-weight: 500; flex-shrink: 0; }
+  .author-name { font-size: 0.82rem; font-weight: 500; color: var(--ink); }
+  .author-role { font-size: 0.72rem; color: #8a7a6a; font-weight: 300; }
+  /* Espacio para agregar testimonio */
+  .testimonial-add { background: #f5f0e8; border: 1.5px dashed rgba(184,146,58,0.4); padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; min-height: 220px; }
+
+  .contact-section { background: var(--ink); color: var(--cream); padding: 8rem 6rem; text-align: center; }
+  .contact-eyebrow { color: var(--gold-light); margin-bottom: 1.2rem; font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; }
+  .contact-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; line-height: 1.1; color: var(--cream); margin-bottom: 1.5rem; }
+  .contact-title em { font-style: italic; color: var(--gold-light); }
+  .contact-desc { font-size: 1rem; line-height: 1.8; color: #a09080; max-width: 520px; margin: 0 auto 3.5rem; font-weight: 300; }
+  .contact-options { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 4rem; }
+  .contact-option { background: rgba(255,255,255,0.04); border: 0.5px solid rgba(184,146,58,0.25); padding: 1.8rem 2.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; min-width: 160px; cursor: pointer; transition: background 0.3s, border-color 0.3s; text-decoration: none; color: inherit; }
+  .contact-option:hover { background: rgba(184,146,58,0.1); border-color: var(--gold); }
+  .contact-icon { font-size: 1.5rem; }
+  .contact-label { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-light); font-weight: 500; }
+  .contact-val { font-size: 0.85rem; color: #c4b89e; font-weight: 300; }
+
+  footer { background: #0f0b06; color: #5a4e42; padding: 2rem 6rem; display: flex; align-items: center; justify-content: space-between; border-top: 0.5px solid rgba(184,146,58,0.1); }
+  .footer-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #8a7a6a; }
+  .footer-brand span { color: var(--gold); }
+  .footer-copy { font-size: 0.72rem; letter-spacing: 0.06em; }
+
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 6rem 2rem 3rem; }
+    .hero-right { min-height: 50vh; }
+    section { padding: 4rem 2rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-item.large { grid-column: span 2; }
+    .prices-grid { grid-template-columns: 1fr; }
+    .prices-section { padding: 4rem 2rem; }
+    .alma-inner { grid-template-columns: 1fr; }
+    .alma-left { padding: 4rem 2rem; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .gallery-section, .testimonials-section, .contact-section { padding: 4rem 2rem; }
+    footer { flex-direction: column; gap: 0.8rem; padding: 2rem; text-align: center; }
+    .price-notes { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Zully <span>Correa</span></a>
+  <ul class="nav-links">
+    <li><a href="#obras">Obras</a></li>
+    <li><a href="#comisiones">Comisiones</a></li>
+    <li><a href="#alma">Alma Creativa</a></li>
+    <li><a href="#testimonios">Vivencias</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="inicio">
+  <div class="hero-left">
+    <p class="hero-eyebrow reveal">Arte · Naturaleza · Bienestar</p>
+    <h1 class="hero-title reveal reveal-delay-1">Zully<br><em>Correa</em></h1>
+    <p class="hero-subtitle reveal reveal-delay-2">Artista plástica &amp; tallerista</p>
+    <p class="hero-desc reveal reveal-delay-2">
+      Pinturas de fauna en óleo y acrílico que capturan la esencia salvaje de la naturaleza.
+      Cada obra es una conversación entre el animal y quien la habita.
+    </p>
+    <div class="hero-ctas reveal reveal-delay-3">
+      <a href="#comisiones" class="btn-primary">Pedir una comisión</a>
+      <a href="#alma" class="btn-outline">Alma Creativa</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-grid">
+      <!-- REEMPLAZA src con tus rutas de imagen -->
+      <div class="hero-img tall">
+        <img src="imagenes/obra1.jpg" alt="Obra 1">
+      </div>
+      <div class="hero-img">
+        <img src="imagenes/obra2.jpg" alt="Obra 2">
+      </div>
+      <div class="hero-img">
+        <img src="imagenes/obra3.jpg" alt="Obra 3">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOBRE MÍ ===== -->
+<section id="sobre" style="padding: 7rem 6rem;">
+  <div class="about-grid">
+    <div class="about-image-wrap reveal">
+      <!-- REEMPLAZA src con tu foto -->
+      <img src="imagenes/foto-zully.jpg" alt="Zully Correa" class="about-photo"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="about-photo-placeholder" style="display:none;">
+        <span style="font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);">Agregar foto</span>
+      </div>
+    </div>
+    <div class="about-text reveal reveal-delay-1">
+      <p class="section-eyebrow">La artista</p>
+      <h2 class="section-title">Un pincel guiado<br>por <em>el alma</em></h2>
+      <!-- EDITA este texto con tu bio -->
+      <p>Soy Zully Correa, artista plástica colombiana apasionada por la fauna silvestre y su representación en óleo y acrílico. Cada trazado es una meditación; cada obra, un homenaje a la vida que nos rodea.</p>
+      <p>Mi trabajo fusiona el hiperrealismo con una sensibilidad espiritual: los ojos de un halcón, la danza de unos flamencos, la presencia silenciosa de un caballo. <strong>La naturaleza como maestra. El arte como puente.</strong></p>
+      <div class="about-stats">
+        <!-- EDITA los números -->
+        <div><div class="stat-num">+10</div><div class="stat-label">Años pintando</div></div>
+        <div><div class="stat-num">+50</div><div class="stat-label">Obras vendidas</div></div>
+        <div><div class="stat-num">+30</div><div class="stat-label">Talleres realizados</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== GALERÍA ===== -->
+<section class="gallery-section" id="obras">
+  <div class="gallery-header">
+    <div>
+      <p class="section-eyebrow">Portafolio</p>
+      <h2 class="section-title">Obras <em>originales</em></h2>
+    </div>
+    <a href="#comisiones" class="btn-outline">Ver precios</a>
+  </div>
+  <div class="gallery-grid">
+    <!-- OBRAS ACTUALES — reemplaza src y el texto de overlay -->
+    <div class="gallery-item large">
+      <img src="imagenes/guacamayas.jpg" alt="Guacamayas">
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Guacamayas · Acrílico</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="imagenes/aguila.jpg" alt="Aguila">
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Águila &amp; mariposa · Acrílico</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="imagenes/caracara.jpg" alt="Caracara">
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Caracara · Óleo</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="imagenes/condor.jpg" alt="Condor">
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Cóndor · Óleo</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="imagenes/flamencos.jpg" alt="Flamencos">
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Flamencos · Acrílico</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="imagenes/martin.jpg" alt="Martin pescador">
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Martín pescador · Acrílico</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="imagenes/caballo.jpg" alt="Caballo">
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Caballo · Óleo</span></div>
+    </div>
+    <div class="gallery-item">
+      <img src="imagenes/buho.jpg" alt="Buho">
+      <div class="gallery-overlay"><span class="gallery-overlay-text">Búho real · Óleo</span></div>
+    </div>
+    <!-- ESPACIOS PARA FOTOS NUEVAS — reemplaza src cuando tengas las imágenes -->
+    <div class="gallery-add"><span class="add-text">Próxima obra</span></div>
+    <div class="gallery-add"><span class="add-text">Próxima obra</span></div>
+    <div class="gallery-add"><span class="add-text">Próxima obra</span></div>
+    <div class="gallery-add"><span class="add-text">Próxima obra</span></div>
+  </div>
+</section>
+
+<!-- ===== COMISIONES ===== -->
+<section class="prices-section" id="comisiones">
+  <p class="section-eyebrow reveal">Comisiones personalizadas</p>
+  <h2 class="section-title reveal reveal-delay-1">Tu historia,<br><em>en lienzo</em></h2>
+  <p class="prices-intro reveal reveal-delay-2">
+    Pinta a tu mascota, animal favorito o el retrato que siempre soñaste.
+    Cada comisión es única, pintada a mano en acrílico u óleo sobre lienzo.
+    Precios en pesos colombianos (COP).
+  </p>
+  <div class="prices-grid reveal">
+    <div class="price-card">
+      <div class="price-size">10 × 10 cm</div>
+      <div class="price-name">Miniatura</div>
+      <div class="price-row"><div class="price-tech">Acrílico</div><div class="price-amounts"><strong>$100.000</strong> Simple · <strong>$120.000</strong> Composición</div></div>
+      <div class="price-row"><div class="price-tech">Óleo</div><div class="price-amounts"><strong>$120.000</strong> Simple · <strong>$150.000</strong> Composición</div></div>
+    </div>
+    <div class="price-card">
+      <div class="price-size">20 × 20 cm</div>
+      <div class="price-name">Pequeño</div>
+      <div class="price-row"><div class="price-tech">Acrílico</div><div class="price-amounts"><strong>$180.000</strong> Simple · <strong>$220.000</strong> Composición</div></div>
+      <div class="price-row"><div class="price-tech">Óleo</div><div class="price-amounts"><strong>$220.000</strong> Simple · <strong>$260.000</strong> Composición</div></div>
+    </div>
+    <div class="price-card">
+      <div class="price-size">30 × 40 cm</div>
+      <div class="price-name">Mediano</div>
+      <div class="price-row"><div class="price-tech">Acrílico</div><div class="price-amounts"><strong>$350.000</strong> Simple · <strong>$420.000</strong> Composición</div></div>
+      <div class="price-row"><div class="price-tech">Óleo</div><div class="price-amounts"><strong>$420.000</strong> Simple · <strong>$500.000</strong> Composición</div></div>
+    </div>
+    <div class="price-card">
+      <div class="price-size">50 × 70 cm</div>
+      <div class="price-name">Sala (M)</div>
+      <div class="price-row"><div class="price-tech">Acrílico</div><div class="price-amounts"><strong>$650.000</strong> Simple · <strong>$750.000</strong> Composición</div></div>
+      <div class="price-row"><div class="price-tech">Óleo</div><div class="price-amounts"><strong>$800.000</strong> Simple · <strong>$950.000</strong> Composición</div></div>
+    </div>
+    <div class="price-card">
+      <div class="price-size">75 × 100 cm</div>
+      <div class="price-name">Sala (L)</div>
+      <div class="price-row"><div class="price-tech">Acrílico</div><div class="price-amounts"><strong>$1.000.000</strong> Simple · <strong>$1.200.000</strong> Composición</div></div>
+      <div class="price-row"><div class="price-tech">Óleo</div><div class="price-amounts"><strong>$1.200.000</strong> Simple · <strong>$1.500.000</strong> Composición</div></div>
+    </div>
+    <div class="price-card">
+      <div class="price-size">100 × 120 cm</div>
+      <div class="price-name">Gran formato</div>
+      <div class="price-row"><div class="price-tech">Acrílico</div><div class="price-amounts"><strong>$1.500.000</strong> Simple · <strong>$1.800.000</strong> Composición</div></div>
+      <div class="price-row"><div class="price-tech">Óleo</div><div class="price-amounts"><strong>$1.800.000</strong> Simple · <strong>$2.200.000</strong> Composición</div></div>
+    </div>
+  </div>
+  <div class="price-notes">
+    <div class="price-note">Formatos más grandes: precio a convenir</div>
+    <div class="price-note">Los precios no incluyen envío ni transporte</div>
+    <div class="price-note">El precio puede variar según detalles adicionales</div>
+    <div class="price-note">Las piezas están sujetas a aprobación de la artista</div>
+    <div class="price-note">Los tiempos de entrega son a convenir</div>
+    <div class="price-note">Tamaños pueden variar ±5 cm según la necesidad</div>
+  </div>
+  <div class="prices-cta"><a href="#contacto" class="btn-primary">Solicitar comisión</a></div>
+</section>
+
+<!-- ===== ALMA CREATIVA ===== -->
+<section class="alma-section" id="alma">
+  <div class="alma-inner">
+    <div class="alma-left">
+      <p class="alma-eyebrow">Taller de arte &amp; bienestar</p>
+      <h2 class="alma-title">Alma<br><em>Creativa</em></h2>
+      <p class="alma-tagline">Donde el arte sana, conecta y transforma.</p>
+      <!-- EDITA la descripción del taller -->
+      <p class="alma-desc">
+        Talleres presenciales de pintura acompañados siempre por un invitado experto en bienestar:
+        físico, espiritual, financiero, mental. Cada sesión tiene un propósito.
+        Cada pincelada, una intención.
+      </p>
+      <div class="alma-pillars">
+        <div class="pillar"><div class="pillar-icon">🎨</div><div class="pillar-name">Arte &amp; expresión</div><div class="pillar-text">Pintura guiada para todos los niveles</div></div>
+        <div class="pillar"><div class="pillar-icon">🌿</div><div class="pillar-name">Bienestar físico</div><div class="pillar-text">Movimiento, respiración y presencia</div></div>
+        <div class="pillar"><div class="pillar-icon">✨</div><div class="pillar-name">Espiritualidad</div><div class="pillar-text">Conexión con lo esencial</div></div>
+        <div class="pillar"><div class="pillar-icon">💛</div><div class="pillar-name">Salud mental</div><div class="pillar-text">Arte como herramienta terapéutica</div></div>
+      </div>
+      <a href="#contacto" class="btn-primary" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:white;">Inscribirme al próximo taller</a>
+    </div>
+    <div class="alma-right">
+      <div class="alma-logo-area">
+        <!-- Logo Alma Creativa — renombra el archivo según lo que uses -->
+        <img src="imagenes/logo-alma-creativa.png" alt="Logo Alma Creativa" class="alma-logo-img"
+             onerror="this.style.opacity='0.3';">
+      </div>
+      <div class="alma-events">
+        <div class="alma-events-title">Talleres realizados</div>
+        <!-- EDITA con los nombres reales de tus talleres -->
+        <div class="event-row">
+          <div class="event-num">01</div>
+          <div class="event-info"><div class="event-name">Nombre del taller</div><div class="event-detail">Invitado · Fecha</div></div>
+        </div>
+        <div class="event-row">
+          <div class="event-num">02</div>
+          <div class="event-info"><div class="event-name">Nombre del taller</div><div class="event-detail">Invitado · Fecha</div></div>
+        </div>
+        <div class="event-row">
+          <div class="event-num">03</div>
+          <div class="event-info"><div class="event-name">Nombre del taller</div><div class="event-detail">Invitado · Fecha</div></div>
+        </div>
+        <!-- Agrega más event-row según necesites -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TESTIMONIOS ===== -->
+<section class="testimonials-section" id="testimonios">
+  <div class="testimonials-header">
+    <p class="section-eyebrow">Vivencias</p>
+    <h2 class="section-title">Lo que <em>dicen</em><br>quienes han vivido el arte</h2>
+  </div>
+  <div class="testimonials-grid">
+    <!-- EDITA o agrega tarjetas de testimonio copiando este bloque -->
+    <div class="testimonial-card reveal">
+      <p class="testimonial-text">"Pedí un retrato de mi perro y el resultado me dejó sin palabras. Zully capturó su alma, no solo su cara. Es la obra más valiosa de mi casa."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">MC</div>
+        <div><div class="author-name">María Camila</div><div class="author-role">Cliente — comisión de mascota</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-1">
+      <p class="testimonial-text">"El taller de Alma Creativa fue una experiencia transformadora. Pinté por primera vez y salí sintiéndome liviana, conectada conmigo misma."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">LP</div>
+        <div><div class="author-name">Laura Paola</div><div class="author-role">Participante — Alma Creativa</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal reveal-delay-2">
+      <p class="testimonial-text">"La pintura de las guacamayas que le encargué a Zully es exactamente lo que quería para mi sala. Los colores son vivos, la textura increíble."</p>
+      <div class="testimonial-author">
+        <div class="author-avatar">AR</div>
+        <div><div class="author-name">Andrés Rivera</div><div class="author-role">Coleccionista</div></div>
+      </div>
+    </div>
+    <!-- Espacio para agregar más testimonios -->
+    <div class="testimonial-add reveal">
+      <span style="font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);font-weight:500;">Agregar testimonio</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACTO ===== -->
+<section class="contact-section" id="contacto">
+  <p class="contact-eyebrow">Hablemos</p>
+  <h2 class="contact-title">Hagamos tu obra<br><em>realidad</em></h2>
+  <p class="contact-desc">¿Quieres una comisión, información sobre los talleres, o simplemente conectar con el mundo del arte y el bienestar?</p>
+  <div class="contact-options">
+    <!-- REEMPLAZA los datos de contacto reales -->
+    <a href="https://wa.me/57XXXXXXXXXX" class="contact-option">
+      <span class="contact-icon">📱</span>
+      <span class="contact-label">WhatsApp</span>
+      <span class="contact-val">+57 XXX XXX XXXX</span>
+    </a>
+    <a href="https://instagram.com/TU_USUARIO" class="contact-option">
+      <span class="contact-icon">📷</span>
+      <span class="contact-label">Instagram</span>
+      <span class="contact-val">@tu_usuario</span>
+    </a>
+    <a href="mailto:tu@email.com" class="contact-option">
+      <span class="contact-icon">✉️</span>
+      <span class="contact-label">Email</span>
+      <span class="contact-val">tu@email.com</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">Zully <span>Correa</span> · Arte &amp; Bienestar</div>
+  <div class="footer-copy">© 2026 · Barranquilla, Colombia</div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
